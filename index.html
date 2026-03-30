@@ -573,13 +573,19 @@ function startQuiz() {
   answers['contato'] = { nome, wpp, empresa, cargo };
 
   document.getElementById('hero-section').style.display = 'none';
+  document.getElementById('step-0').classList.remove('active');
+  document.getElementById('step-0').style.display = 'none';
   document.getElementById('progress-wrap').style.display = 'block';
   showStep(1);
 }
 
 function showStep(n) {
-  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-  document.getElementById('step-' + n).classList.add('active');
+  document.querySelectorAll('.step').forEach(s => {
+    s.classList.remove('active');
+    if (s.id !== 'step-0') s.style.display = '';
+  });
+  const el = document.getElementById('step-' + n);
+  if (el) { el.style.display = 'block'; el.classList.add('active'); }
   updateProgress(n);
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -607,6 +613,12 @@ function prevStep(n) {
   if (n === 0) {
     document.getElementById('hero-section').style.display = 'block';
     document.getElementById('progress-wrap').style.display = 'none';
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    const s0 = document.getElementById('step-0');
+    s0.style.display = 'block';
+    s0.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
   }
   showStep(n);
 }
